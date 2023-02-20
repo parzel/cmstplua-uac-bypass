@@ -118,13 +118,6 @@
  */
 #include <winternl.h>
 
-/**
- * Windows Update Agent API
- * 
- * https://docs.microsoft.com/en-us/windows/win32/api/wuapi/
- */
-#define COBJMACROS
-#include <wuapi.h>
 
 /**
  * Load custom header files.
@@ -446,13 +439,16 @@ int invokeComElevation(char* file, char* parameters) {
             break;
         }
 
-        wchar_t* wFile =calloc(strlen(file), sizeof(wchar_t));
-        mbstowcs(wFile, file, strlen(file));
+        // I think here was some kind of fuckup where the nullbyte was not included or something simliar
+        // it lead to memory leaks but i hope its fixed now
+        // https://github.com/MicrosoftDocs/cpp-docs/blob/main/docs/c-runtime-library/reference/mbstowcs-mbstowcs-l.md
+        wchar_t* wFile = malloc(strlen(file) * sizeof(wchar_t) + 1);
+        mbstowcs(wFile, file, strlen(file) + 1);
 
         wchar_t* wParameters = NULL;
         if (parameters != NULL) {
-            wParameters = calloc(strlen(parameters), sizeof(wchar_t));
-            mbstowcs(wParameters, parameters, strlen(parameters));
+            wParameters = malloc(strlen(parameters) * sizeof(wchar_t) + 1);
+            mbstowcs(wParameters, parameters, strlen(parameters) + 1);
         }
 
         hResult = pICMLuaUtil->lpVtbl->ShellExec(pICMLuaUtil, (LPCSTR) wFile, (LPCSTR) wParameters, NULL, SEE_MASK_DEFAULT, SW_SHOW);

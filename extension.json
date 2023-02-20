@@ -30,9 +30,9 @@
         },
         {
             "name": "arguments",
-            "desc": "arguments for execute",
+            "desc": "Arguments for command",
             "type": "string",
-            "optional": false
+            "optional": true
         }
     ]
 }
