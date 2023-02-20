@@ -1,0 +1,38 @@
+{
+    "name": "cmstplua-uac-bypass",
+    "version": "1.0.0",
+    "command_name": "cmstplua-uac-bypass",
+    "extension_author": "parzel",
+    "original_author": "tijme",
+    "repo_url": "https://github.com/tijme/cmstplua-uac-bypass",
+    "help": "Use COM Elevation Moniker on the CMSTPLUA COM object in order to execute commands in an elevated context.",
+    "long_help": "",
+    "depends_on": "coff-loader",
+    "entrypoint": "go",
+    "files": [
+        {
+            "os": "windows",
+            "arch": "amd64",
+            "path": "UACBypassCMSTPLUA.x64.o"
+        },
+        {
+            "os": "windows",
+            "arch": "386",
+            "path": "UACBypassCMSTPLUA.x86.o"
+        }
+    ],
+    "arguments": [
+        {
+            "name": "command",
+            "desc": "Command to execute",
+            "type": "string",
+            "optional": false
+        },
+        {
+            "name": "arguments",
+            "desc": "arguments for execute",
+            "type": "string",
+            "optional": false
+        }
+    ]
+}
